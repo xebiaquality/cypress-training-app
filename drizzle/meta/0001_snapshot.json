@@ -1,0 +1,39 @@
+{
+  "version": "5",
+  "dialect": "sqlite",
+  "id": "d18acb6b-719c-4d1a-bc29-df220d965399",
+  "prevId": "6f72dee6-ed62-4653-9dbe-665b1d609535",
+  "tables": {
+    "playlists": {
+      "name": "playlists",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    }
+  },
+  "enums": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {
+      "\"playlists\".\"title\"": "\"playlists\".\"name\""
+    }
+  }
+}

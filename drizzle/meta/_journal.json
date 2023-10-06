@@ -1,0 +1,34 @@
+{
+  "version": "5",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1690982897930,
+      "tag": "0000_large_spirit",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1691131078964,
+      "tag": "0001_living_mariko_yashida",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1692370495301,
+      "tag": "0002_dizzy_masque",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1695380258558,
+      "tag": "0003_famous_pride",
+      "breakpoints": true
+    }
+  ]
+}

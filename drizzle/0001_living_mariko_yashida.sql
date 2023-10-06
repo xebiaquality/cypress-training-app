@@ -1,0 +1,1 @@
+ALTER TABLE `playlists` RENAME COLUMN `title` TO `name`;
