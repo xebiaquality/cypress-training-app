@@ -23,7 +23,7 @@
     "@radix-ui/react-tabs": "^1.0.4",
     "@tanstack/react-actions": "0.0.1-beta.191",
     "@tanstack/react-loaders": "0.0.1-beta.191",
-    "@tanstack/react-query": "^4.32.1",
+    "@tanstack/react-query": "^4.36.1",
     "@tanstack/react-router": "0.0.1-beta.151",
     "@tanstack/react-table": "^8.9.3",
     "@ts-rest/core": "^3.26.4",
