@@ -29,6 +29,20 @@
       "when": 1695380258558,
       "tag": "0003_famous_pride",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1696022968318,
+      "tag": "0004_curly_sphinx",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1696023194712,
+      "tag": "0005_hesitant_the_hunter",
+      "breakpoints": true
     }
   ]
 }

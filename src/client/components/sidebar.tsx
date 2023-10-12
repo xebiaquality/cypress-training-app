@@ -2,13 +2,14 @@ import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 
-import { Link } from '@tanstack/react-router'
+import { Link, useRouter } from '@tanstack/react-router'
 import { client } from '@/client'
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function Sidebar({ className }: SidebarProps) {
   const { isLoading, data } = client.getPlaylists.useQuery(['playlists'])
+  const { navigate } = useRouter()
   return (
     <div className={cn('pb-12', className)}>
       <div className="space-y-4 py-4">
@@ -189,6 +190,12 @@ export function Sidebar({ className }: SidebarProps) {
                     key={`playlist-${playlist?.id}`}
                     variant="ghost"
                     className="w-full justify-start font-normal"
+                    onClick={() =>
+                      navigate({
+                        to: '/playlists/$id',
+                        params: { id: `${playlist.id}` },
+                      })
+                    }
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

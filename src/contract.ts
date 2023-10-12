@@ -3,11 +3,6 @@ import { z } from 'zod'
 
 const c = initContract()
 
-const PlaylistSchema = z.object({
-  id: z.number(),
-  name: z.string(),
-})
-
 export enum TrackSources {
   Spotify = 'spotify',
   YouTube = 'youtube',
@@ -25,13 +20,20 @@ export const TrackSchema = z.object({
    */
   createdAt: z.string(),
 })
+
+const PlaylistSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  tracks: z.array(TrackSchema),
+})
+
 export const contract = c.router(
   {
     createPlaylist: {
       method: 'POST',
       path: '/playlists',
       responses: {
-        201: PlaylistSchema,
+        201: PlaylistSchema.omit({ tracks: true }),
       },
       body: z.object({
         name: z.string(),
@@ -42,7 +44,7 @@ export const contract = c.router(
       method: 'GET',
       path: `/playlists/:id`,
       responses: {
-        200: PlaylistSchema.nullable(),
+        200: z.array(TrackSchema),
         400: c.type<{ message: string }>(),
         404: c.type<{ message: string }>(),
       },
@@ -52,7 +54,7 @@ export const contract = c.router(
       method: 'GET',
       path: `/playlists`,
       responses: {
-        200: z.array(PlaylistSchema.nullable()),
+        200: z.array(PlaylistSchema.omit({ tracks: true })),
       },
       summary: 'Get a all playlist',
     },

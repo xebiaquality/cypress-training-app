@@ -1,12 +1,12 @@
 import { relations, sql } from 'drizzle-orm'
-import { integer, primaryKey, sqliteTable, text } from 'drizzle-orm/sqlite-core'
+import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 import { TrackSources } from '../contract'
 
 export const playlists = sqliteTable('playlists', {
   id: integer('id').primaryKey({ autoIncrement: true }),
   name: text('name').notNull(),
 })
-export const playlistRelations = relations(playlists, ({ many }) => ({
+export const playlistsRelations = relations(playlists, ({ many }) => ({
   tracks: many(tracks),
 }))
 
@@ -27,17 +27,24 @@ export const tracksRelations = relations(tracks, ({ many }) => ({
   playlists: many(playlists),
 }))
 
-export const playlistTracks = sqliteTable(
-  'playlist_tracks',
-  {
-    playlistId: integer('playlist_id')
-      .notNull()
-      .references(() => playlists.id),
-    trackId: integer('track_id')
-      .notNull()
-      .references(() => tracks.id),
-  },
-  (t) => ({
-    pk: primaryKey(t.playlistId, t.trackId),
+export const playlistsToTracks = sqliteTable('playlists_tracks', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  playlistId: integer('playlist_id').references(() => playlists.id),
+  trackId: integer('track_id').references(() => tracks.id),
+})
+
+export const tracksToPlaylistsRelations = relations(
+  playlistsToTracks,
+  ({ one }) => ({
+    playlist: one(playlists, {
+      fields: [playlistsToTracks.playlistId],
+      references: [playlists.id],
+      relationName: 'playlists',
+    }),
+    track: one(tracks, {
+      fields: [playlistsToTracks.trackId],
+      references: [tracks.id],
+      relationName: 'tracks',
+    }),
   })
 )

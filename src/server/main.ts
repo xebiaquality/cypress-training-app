@@ -3,7 +3,7 @@ import bodyParser from 'body-parser'
 import express from 'express'
 import { contract } from '../contract'
 import ViteExpress from 'vite-express'
-import { playlistTracks, playlists, tracks } from './schema'
+import { playlistsToTracks, playlists, tracks } from './schema'
 import { eq } from 'drizzle-orm'
 import { MetadataNotFoundError, getMetadataForUrl } from './api/metadata'
 import { drizzle } from 'drizzle-orm/better-sqlite3'
@@ -23,19 +23,20 @@ const router = s.router(contract, {
         status: 400,
         body: { message: 'Invalid request, id should be a number' },
       }
-
-    const playlist = db
+    // TODO: use db.query with relation instead of manually joining the tables
+    // const result = await db.query.playlists.findFirst({ where: eq(playlistsToTracks.playlistId, +id), with: { tracks: true } }).then(p => p?.tracks ?? [])!
+    const result = db
       .select()
-      .from(playlists)
-      .where(eq(playlists.id, +id))
-      .get()
-    if (!playlist)
-      return {
-        status: 404,
-        body: { message: `Playlist ${id} not found` },
-      }
+      .from(playlistsToTracks)
+      .where(eq(playlistsToTracks.playlistId, +id))
+      .leftJoin(tracks, eq(playlistsToTracks.trackId, tracks.id))
+      .all()
+      .map((t) => t.tracks!)
 
-    return { status: 200, body: playlist }
+    if (!tracks)
+      return { status: 404, body: { message: `Playlist ${id} not found` } }
+
+    return { status: 200, body: result }
   },
   getPlaylists: async () => {
     const result = db.select().from(playlists).all()
@@ -50,7 +51,7 @@ const router = s.router(contract, {
         status: 400,
         body: { message: 'Invalid request, id should be a number' },
       }
-    db.insert(playlistTracks).values({ playlistId: +id, trackId }).run()
+    db.insert(playlistsToTracks).values({ playlistId: +id, trackId }).run()
     return { status: 201, body: { success: true } }
   },
   createPlaylist: async ({ body: playlist }) => {
