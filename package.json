@@ -21,8 +21,6 @@
     "@radix-ui/react-separator": "^1.0.3",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-tabs": "^1.0.4",
-    "@tanstack/react-actions": "0.0.1-beta.191",
-    "@tanstack/react-loaders": "0.0.1-beta.191",
     "@tanstack/react-query": "^4.36.1",
     "@tanstack/react-router": "0.0.1-beta.151",
     "@tanstack/react-table": "^8.9.3",
@@ -34,7 +32,6 @@
     "body-parser": "^1.20.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
-    "cors": "^2.8.5",
     "drizzle-orm": "^0.28.2",
     "express": "^4.18.2",
     "lucide-react": "^0.284.0",
@@ -56,16 +53,9 @@
     "@types/node": "^18.11.18",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.11",
-    "@typescript-eslint/eslint-plugin": "^6.7.4",
-    "@typescript-eslint/parser": "^6.0.0",
     "@vitejs/plugin-react": "^4.1.0",
-    "cypress": "^13.3.0",
     "drizzle-kit": "^0.19.12",
-    "eslint": "^8.50.0",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.3",
     "nodemon": "^3.0.1",
-    "start-server-and-test": "^2.0.1",
     "vite": "^4.0.4"
   }
 }
