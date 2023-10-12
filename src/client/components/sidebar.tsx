@@ -13,11 +13,14 @@ export function Sidebar({ className }: SidebarProps) {
     <div className={cn('pb-12', className)}>
       <div className="space-y-4 py-4">
         <div className="px-3 py-2">
-          <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
+          <h2
+            className="mb-2 px-4 text-lg font-semibold tracking-tight"
+            data-testid="sidebar-discover"
+          >
             Discover
           </h2>
           <div className="space-y-1">
-            <Link to="/">
+            <Link to="/" data-testid="sidebar-link-listen-now">
               <Button variant="ghost" className="w-full justify-start">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -35,7 +38,7 @@ export function Sidebar({ className }: SidebarProps) {
                 Listen Now
               </Button>
             </Link>
-            <Link to="/browse">
+            <Link to="/browse" data-testid="sidebar-link-browse">
               <Button variant="ghost" className="w-full justify-start">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -77,10 +80,13 @@ export function Sidebar({ className }: SidebarProps) {
           </div>
         </div>
         <div className="px-3 py-2">
-          <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
+          <h2
+            className="mb-2 px-4 text-lg font-semibold tracking-tight"
+            data-testid="sidebar-library"
+          >
             Library
           </h2>
-          <div className="space-y-1">
+          <div className="space-y-1" data-testid="sidebar-playlists">
             <Button variant="ghost" className="w-full justify-start">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
