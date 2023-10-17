@@ -182,10 +182,10 @@ export function Sidebar({ className }: SidebarProps) {
           <ScrollArea className="h-[300px] px-1">
             <div className="space-y-1 p-2">
               {isLoading && 'Loading playlists...'}
-              {data?.body?.length === 0 ? (
+              {!Array.isArray(data?.body) ? (
                 <p className="font-normal text-sm">No playlists yet...</p>
               ) : (
-                data?.body?.map((playlist) => (
+                data?.body.map((playlist) => (
                   <Button
                     key={`playlist-${playlist?.id}`}
                     variant="ghost"

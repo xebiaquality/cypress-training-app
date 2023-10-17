@@ -81,7 +81,7 @@ export const columns: ColumnDef<z.infer<typeof TrackSchema>>[] = [
               </DropdownMenuSubTrigger>
               <DropdownMenuSubContent className="w-48">
                 {!isLoading &&
-                  playlists?.body.map((playlist) => (
+                  playlists?.body?.map((playlist) => (
                     <DropdownMenuItem
                       key={playlist?.id}
                       onClick={() =>

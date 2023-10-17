@@ -1,5 +1,31 @@
 # Musictracker
 
+## Running the app
+
+### Running the app (frontend and backend)
+
+to run the frontend and backend together, you need to run the following command:
+
+```bash
+npm run dev
+```
+
+### Running the Frontend in isolation
+
+to run the frontend in isolation, you need to run the following command:
+
+```bash
+ISOLATION='frontend' npm run dev
+```
+
+### Running the Backend in isolation
+
+to run the backend in isolation, you need to run the following command:
+
+```bash
+ISOLATION='backend' npm run dev
+```
+
 ## Project structure
 
 - `src/client/` - React client code
