@@ -188,6 +188,7 @@ export function Sidebar({ className }: SidebarProps) {
                 data?.body.map((playlist) => (
                   <Button
                     key={`playlist-${playlist?.id}`}
+                    name={playlist.name}
                     variant="ghost"
                     className="w-full justify-start font-normal"
                     onClick={() =>

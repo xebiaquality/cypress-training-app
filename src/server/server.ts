@@ -9,6 +9,7 @@ import { MetadataNotFoundError, getMetadataForUrl } from './api/metadata'
 import { drizzle } from 'drizzle-orm/better-sqlite3'
 import * as schema from './schema'
 import { sqlite } from './db'
+import { desc } from 'drizzle-orm'
 
 const app = express()
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -17,6 +18,17 @@ app.use(bodyParser.json())
 const s = initServer()
 const db = drizzle(sqlite, { schema })
 const router = s.router(contract, {
+  resetAllData: async () => {
+    db.delete(playlists).run()
+    db.delete(tracks).run()
+    return { status: 200, body: { success: true } }
+  },
+
+  removeAllPlaylists: async () => {
+    db.delete(playlists).run()
+    return { status: 200, body: { success: true } }
+  },
+
   getPlaylist: async ({ params: { id } }) => {
     if (!Number.isInteger(+id))
       return {
@@ -39,7 +51,8 @@ const router = s.router(contract, {
     return { status: 200, body: result }
   },
   getPlaylists: async () => {
-    const result = db.select().from(playlists).all()
+    // const result = db.select().from(playlists).all()
+    const result = db.select().from(playlists).orderBy(desc(playlists.id)).all()
     return {
       status: 200,
       body: result,

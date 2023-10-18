@@ -29,6 +29,15 @@ const PlaylistSchema = z.object({
 
 export const contract = c.router(
   {
+    resetAllData: {
+      method: 'GET',
+      path: '/reset',
+      responses: {
+        200: c.type<{ success: true }>(),
+      },
+      summary: 'flush all data',
+    },
+
     createPlaylist: {
       method: 'POST',
       path: '/playlists',
@@ -39,6 +48,14 @@ export const contract = c.router(
         name: z.string(),
       }),
       summary: 'Create a post',
+    },
+    removeAllPlaylists: {
+      method: 'GET',
+      path: '/playlists/remove-all',
+      responses: {
+        200: c.type<{ success: true }>(),
+      },
+      summary: 'Delete all playlists',
     },
     getPlaylist: {
       method: 'GET',
@@ -56,7 +73,7 @@ export const contract = c.router(
       responses: {
         200: z.array(PlaylistSchema.omit({ tracks: true })),
       },
-      summary: 'Get a all playlist',
+      summary: 'Get all playlists',
     },
     addTrackToPlaylist: {
       method: 'POST',
