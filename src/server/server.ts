@@ -50,6 +50,14 @@ const router = s.router(contract, {
 
     return { status: 200, body: result }
   },
+  removePlaylist: async ({ params: { id } }) => {
+    try {
+      db.delete(playlists).where(eq(playlists.id, +id)).run()
+    } catch (e) {
+      return { status: 404, body: { message: 'Error removing playlist' } }
+    }
+    return { status: 200, body: { deleted: true } }
+  },
   getPlaylists: async () => {
     // const result = db.select().from(playlists).all()
     const result = db.select().from(playlists).orderBy(desc(playlists.id)).all()

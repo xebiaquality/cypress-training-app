@@ -67,6 +67,16 @@ export const contract = c.router(
       },
       summary: 'Get a playlist by id',
     },
+    removePlaylist: {
+      method: 'DELETE',
+      path: `/playlists/:id`,
+      body: z.optional(PlaylistSchema.omit({ tracks: true })),
+      responses: {
+        200: c.type<{ deleted: true }>(),
+        404: c.type<{ message: string }>(),
+      },
+      summary: 'Remove a playlist by id',
+    },
     getPlaylists: {
       method: 'GET',
       path: `/playlists`,

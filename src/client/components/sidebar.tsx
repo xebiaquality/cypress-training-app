@@ -1,15 +1,27 @@
 import { cn } from '@/lib/utils'
-import { Button } from '@/components/ui/button'
+import { Button, buttonVariants } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
-
-import { Link, useRouter } from '@tanstack/react-router'
+import { Link } from '@tanstack/react-router'
 import { client } from '@/client'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from './ui/dropdown-menu'
+import { MoreHorizontal } from 'lucide-react'
+import queryClient from '@/query-client'
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function Sidebar({ className }: SidebarProps) {
   const { isLoading, data } = client.getPlaylists.useQuery(['playlists'])
-  const { navigate } = useRouter()
+  const { mutate, isLoading: isRemoving } = client.removePlaylist.useMutation({
+    onSuccess: () => {
+      queryClient.invalidateQueries(['playlists'])
+    },
+  })
   return (
     <div className={cn('pb-12', className)}>
       <div className="space-y-4 py-4">
@@ -182,40 +194,63 @@ export function Sidebar({ className }: SidebarProps) {
           <ScrollArea className="h-[300px] px-1">
             <div className="space-y-1 p-2">
               {isLoading && 'Loading playlists...'}
-              {!Array.isArray(data?.body) ? (
+              {!Array.isArray(data?.body) || data?.body.length === 0 ? (
                 <p className="font-normal text-sm">No playlists yet...</p>
               ) : (
                 data?.body.map((playlist) => (
-                  <Button
+                  <Link
                     key={`playlist-${playlist?.id}`}
-                    name={playlist.name}
-                    variant="ghost"
-                    className="w-full justify-start font-normal"
-                    onClick={() =>
-                      navigate({
-                        to: '/playlists/$id',
-                        params: { id: `${playlist.id}` },
-                      })
-                    }
+                    aria-label={playlist.name}
+                    className={cn(
+                      buttonVariants({ variant: 'ghost' }),
+                      'w-full justify-between font-normal'
+                    )}
+                    to={'/playlists/$id'}
+                    params={{ id: `${playlist.id}` }}
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="mr-2 h-4 w-4"
-                    >
-                      <path d="M21 15V6" />
-                      <path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
-                      <path d="M12 12H3" />
-                      <path d="M16 6H3" />
-                      <path d="M12 18H3" />
-                    </svg>
-                    {playlist?.name}
-                  </Button>
+                    <span className="flex items-center">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="mr-2 h-4 w-4"
+                      >
+                        <path d="M21 15V6" />
+                        <path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
+                        <path d="M12 12H3" />
+                        <path d="M16 6H3" />
+                        <path d="M12 18H3" />
+                      </svg>
+                      {playlist?.name}
+                    </span>
+
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" className="h-8 w-8 p-0">
+                          <span className="sr-only">Open menu</span>
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                        <DropdownMenuItem
+                          disabled={isRemoving}
+                          onClick={() =>
+                            mutate({
+                              params: { id: `${playlist.id}` },
+                              body: playlist,
+                            })
+                          }
+                        >
+                          Remove playlist
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </Link>
                 ))
               )}
             </div>
