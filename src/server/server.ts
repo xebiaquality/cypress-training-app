@@ -28,30 +28,54 @@ const router = s.router(contract, {
     db.delete(playlists).run()
     return { status: 200, body: { success: true } }
   },
+  updatePlaylist: async ({ body: playlist, params: { id } }) => {
+    const res = await db
+      .update(playlists)
+      .set(playlist)
+      .where(eq(playlists.id, +id))
+      .execute()
+    if (res.changes === 0) {
+      return { status: 404, body: { message: 'no playlist updated' } }
+    }
+    return { status: 200, body: { ...playlist, id: +id } }
+  },
+  getPlaylistTracks: async ({ params: { id } }) => {
+    if (!Number.isInteger(+id))
+      return {
+        status: 400,
+        body: { message: 'Invalid request, id should be a number' },
+      }
+    const result = await db.query.playlistsToTracks
+      .findMany({
+        where: eq(playlistsToTracks.playlistId, +id),
+        with: { track: true },
+      })
+      .then((rows) => {
+        if (rows.length < 0 || !rows?.at(0)?.track) return []
+        return rows.map((row) => row.track!)
+      })
 
+    return { status: 200, body: result }
+  },
   getPlaylist: async ({ params: { id } }) => {
     if (!Number.isInteger(+id))
       return {
         status: 400,
         body: { message: 'Invalid request, id should be a number' },
       }
-    // TODO: use db.query with relation instead of manually joining the tables
-    // const result = await db.query.playlists.findFirst({ where: eq(playlistsToTracks.playlistId, +id), with: { tracks: true } }).then(p => p?.tracks ?? [])!
-    const result = db
-      .select()
-      .from(playlistsToTracks)
-      .where(eq(playlistsToTracks.playlistId, +id))
-      .leftJoin(tracks, eq(playlistsToTracks.trackId, tracks.id))
-      .all()
-      .map((t) => t.tracks!)
-
-    if (!tracks)
+    const result = await db.query.playlists.findFirst({
+      where: eq(playlists.id, +id),
+    })
+    if (!result)
       return { status: 404, body: { message: `Playlist ${id} not found` } }
 
     return { status: 200, body: result }
   },
   removePlaylist: async ({ params: { id } }) => {
     try {
+      db.delete(playlistsToTracks)
+        .where(eq(playlistsToTracks.playlistId, +id))
+        .run()
       db.delete(playlists).where(eq(playlists.id, +id)).run()
     } catch (e) {
       return { status: 404, body: { message: 'Error removing playlist' } }
@@ -59,7 +83,6 @@ const router = s.router(contract, {
     return { status: 200, body: { deleted: true } }
   },
   getPlaylists: async () => {
-    // const result = db.select().from(playlists).all()
     const result = db.select().from(playlists).orderBy(desc(playlists.id)).all()
     return {
       status: 200,

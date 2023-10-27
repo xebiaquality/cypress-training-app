@@ -49,7 +49,13 @@ const defaultValues: Partial<TrackFormValues> = {
   artist: '',
   coverUrl: '',
 }
-function AddMusicDialog() {
+function AddMusicDialog({
+  onOpenChange,
+  open,
+}: {
+  onOpenChange: () => void
+  open: boolean
+}) {
   const { mutate } = client.addMusicTrack.useMutation({
     onSuccess: () => {
       navigate({ to: '..', replace: true })
@@ -99,14 +105,7 @@ function AddMusicDialog() {
   }
   const navigate = useNavigate()
   return (
-    <Dialog
-      open={true}
-      onOpenChange={(open) => {
-        if (!open) {
-          navigate({ to: '..' })
-        }
-      }}
-    >
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Add Music</DialogTitle>

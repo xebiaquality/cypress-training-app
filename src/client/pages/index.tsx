@@ -5,11 +5,13 @@ import { ScrollBar } from '../components/ui/scroll-area'
 import { listenNowAlbums, madeForYouAlbums } from '../data/albums'
 import { AlbumArtwork } from '../components/album-artwork'
 import { PodcastEmptyPlaceholder } from '../components/podcast-empty-placeholder'
-import { Link, Outlet } from '@tanstack/react-router'
+import { Outlet } from '@tanstack/react-router'
 import { PlusCircledIcon } from '@radix-ui/react-icons'
-import { buttonVariants } from '@/components/ui/button'
+import { Button } from '@/components/ui/button'
+import { Dialogs, useDialogContext } from '@/context/dialog-context'
 
 export function Index() {
+  const { openDialog } = useDialogContext()
   return (
     <>
       <Tabs defaultValue="music" className="h-full space-y-6">
@@ -24,10 +26,10 @@ export function Index() {
             </TabsTrigger>
           </TabsList>
           <div className="ml-auto mr-4">
-            <Link className={buttonVariants()} to="/add-track">
+            <Button onClick={() => openDialog(Dialogs.AddTrackDialog)}>
               <PlusCircledIcon className="mr-2 h-4 w-4" />
               Add music
-            </Link>
+            </Button>
           </div>
         </div>
         <TabsContent value="music" className="border-none p-0 outline-none">

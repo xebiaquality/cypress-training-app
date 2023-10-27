@@ -57,11 +57,21 @@ export const contract = c.router(
       },
       summary: 'Delete all playlists',
     },
+    getPlaylistTracks: {
+      method: 'GET',
+      path: `/playlists/:id/tracks`,
+      responses: {
+        200: z.array(TrackSchema),
+        400: c.type<{ message: string }>(),
+        404: c.type<{ message: string }>(),
+      },
+      summary: 'Get a playlist by id',
+    },
     getPlaylist: {
       method: 'GET',
       path: `/playlists/:id`,
       responses: {
-        200: z.array(TrackSchema),
+        200: PlaylistSchema.omit({ tracks: true }),
         400: c.type<{ message: string }>(),
         404: c.type<{ message: string }>(),
       },
@@ -84,6 +94,15 @@ export const contract = c.router(
         200: z.array(PlaylistSchema.omit({ tracks: true })),
       },
       summary: 'Get all playlists',
+    },
+    updatePlaylist: {
+      method: 'PATCH',
+      path: `/playlists/:id`,
+      body: PlaylistSchema.omit({ tracks: true, id: true }),
+      responses: {
+        200: PlaylistSchema.omit({ tracks: true }),
+        404: c.type<{ message: string }>(),
+      },
     },
     addTrackToPlaylist: {
       method: 'POST',
