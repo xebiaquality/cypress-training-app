@@ -1,5 +1,5 @@
 import { ColumnDef } from '@tanstack/react-table'
-import { TrackSchema } from '../../../contract'
+import { TrackSchema } from '../../../contracts/tracks'
 import { z } from 'zod'
 import {
   DropdownMenu,
@@ -57,11 +57,10 @@ export const columns: ColumnDef<z.infer<typeof TrackSchema>>[] = [
     id: 'actions',
     cell: ({ row }) => {
       const track = row.original
-      const { isLoading, data: playlists } = client.getPlaylists.useQuery([
-        'playlists',
-      ])
+      const { isLoading, data: playlists } =
+        client.playlists.getPlaylists.useQuery(['playlists'])
       const { mutate: addTrackToPlaylist } =
-        client.addTrackToPlaylist.useMutation()
+        client.playlists.addTrackToPlaylist.useMutation()
 
       return (
         <DropdownMenu>

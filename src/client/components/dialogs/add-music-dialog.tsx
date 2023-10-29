@@ -10,7 +10,6 @@ import { Input } from '@/components/ui/input'
 import { Button } from '../ui/button'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { TrackSources } from '../../../contract'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
   Form,
@@ -26,6 +25,7 @@ import { client } from '@/client'
 import { Separator } from '../ui/separator'
 import albumCoverPlaceholderImage from '../../assets/cover-placeholder.png'
 import { useNavigate } from '@tanstack/react-router'
+import { TrackSources } from '../../../contracts/tracks'
 const trackFormSchema = z.object({
   url: z.string().url(),
   title: z
@@ -56,7 +56,7 @@ function AddMusicDialog({
   onOpenChange: () => void
   open: boolean
 }) {
-  const { mutate } = client.addMusicTrack.useMutation({
+  const { mutate } = client.tracks.addMusicTrack.useMutation({
     onSuccess: () => {
       navigate({ to: '..', replace: true })
     },
@@ -74,7 +74,7 @@ function AddMusicDialog({
 
   useEffect(() => {
     if (!urlState.invalid && url != '' && title == '') {
-      client.getMetaForMedia
+      client.tracks.getMetaForMedia
         .query({ query: { source, url } })
         .then(({ body, status }) => {
           if (status === 200) {

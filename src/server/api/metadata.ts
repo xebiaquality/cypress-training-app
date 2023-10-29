@@ -1,4 +1,4 @@
-import { TrackSources } from '../../contract'
+import { TrackSources } from '../../contracts/tracks'
 import { z } from 'zod'
 
 const oEmbedResponse = z.object({

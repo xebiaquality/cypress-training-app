@@ -22,7 +22,7 @@ function CreatePlaylistDialog({
 }) {
   const playlistNameRef = useRef<HTMLInputElement>(null)
   const { mutate: createPlaylist, isLoading } =
-    client.createPlaylist.useMutation({
+    client.playlists.createPlaylist.useMutation({
       onSuccess: () => {
         onOpenChange(false)
         queryClient.invalidateQueries(['playlists'])

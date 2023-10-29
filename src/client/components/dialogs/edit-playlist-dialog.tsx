@@ -23,13 +23,13 @@ function EditPlaylistDialog({
   playlistId?: number
 }) {
   const playlistNameRef = useRef<HTMLInputElement>(null)
-  const { data: playlist, isLoading } = client.getPlaylist.useQuery(
+  const { data: playlist, isLoading } = client.playlists.getPlaylist.useQuery(
     [`playlist-${playlistId}`],
     { params: { id: playlistId?.toString() || '' } },
     { enabled: open && playlistId !== 0 }
   )
   const { mutate: updatePlaylist, isLoading: isUpdating } =
-    client.updatePlaylist.useMutation({
+    client.playlists.updatePlaylist.useMutation({
       onSuccess: () => {
         onOpenChange(false)
         queryClient.invalidateQueries(['playlists'])

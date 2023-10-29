@@ -1,6 +1,6 @@
 import { relations, sql } from 'drizzle-orm'
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
-import { TrackSources } from '../contract'
+import { TrackSources } from '../contracts/tracks'
 
 export const playlists = sqliteTable('playlists', {
   id: integer('id').primaryKey({ autoIncrement: true }),

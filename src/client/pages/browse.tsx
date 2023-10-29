@@ -4,7 +4,9 @@ import { Tracklist } from '@/components/tracklist/tracklist'
 import { Spinner } from '@/components/ui/spinner'
 
 export function Browse() {
-  const { data, isLoading } = client.getAllMusicTracks.useQuery(['tracks'])
+  const { data, isLoading } = client.tracks.getAllMusicTracks.useQuery([
+    'tracks',
+  ])
 
   return (
     <div className="space-y-6">

@@ -18,12 +18,15 @@ interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function Sidebar({ className }: SidebarProps) {
   const { openDialog } = useDialogContext()
-  const { isLoading, data } = client.getPlaylists.useQuery(['playlists'])
-  const { mutate, isLoading: isRemoving } = client.removePlaylist.useMutation({
-    onSuccess: () => {
-      queryClient.invalidateQueries(['playlists'])
-    },
-  })
+  const { isLoading, data } = client.playlists.getPlaylists.useQuery([
+    'playlists',
+  ])
+  const { mutate, isLoading: isRemoving } =
+    client.playlists.removePlaylist.useMutation({
+      onSuccess: () => {
+        queryClient.invalidateQueries(['playlists'])
+      },
+    })
   return (
     <div className={cn('pb-12', className)}>
       <div className="space-y-4 py-4">
